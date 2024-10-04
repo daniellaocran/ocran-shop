@@ -1,0 +1,85 @@
+document.addEventListener("DOMContentLoaded", (e) => {
+  async function fetchProducts(category = "") {
+    const spinner = document.getElementById("spinner");
+    const productContainer = document.getElementById("product-container");
+
+    // Show the spinner and clear product container
+    spinner.style.display = "block";
+    productContainer.innerHTML = "";
+
+    try {
+      const url = category
+        ? `https://shopfront-tagname.onrender.com/api/v1/products?category=${category}`
+        : `https://shopfront-tagname.onrender.com/api/v1/products`;
+      const response = await fetch(url);
+      const data = await response.json();
+
+      // Clear existing products
+      productContainer.innerHTML = "";
+
+      // Hide the spinner after products are loaded
+      spinner.style.display = "none";
+
+      data.forEach((product) => {
+        const productCard = document.createElement("div");
+        productCard.className = "card";
+
+        const productImage = document.createElement("img");
+        productImage.src = product.imageUrl;
+        productImage.alt = product.name;
+
+        const productName = document.createElement("h4");
+        productName.textContent = product.name;
+
+        const productPrice = document.createElement("p");
+        productPrice.className = "price";
+        productPrice.textContent = `GHS ${product.price}`;
+
+        const buyBtn = document.createElement("button");
+        buyBtn.className = "buyBtn";
+        buyBtn.textContent = "Buy Now";
+
+        // Add event listener for click event
+        buyBtn.addEventListener("click", function () {
+          const userConfirmed = confirm(
+            "Are you sure you want to confirm your order?"
+          );
+
+          if (userConfirmed) {
+            alert("Your order has been confirmed!"); // For demo purposes
+          } else {
+            alert("Your order has been canceled.");
+          }
+        });
+
+        productCard.appendChild(productImage);
+        productCard.appendChild(productName);
+        productCard.appendChild(productPrice);
+        productCard.appendChild(buyBtn);
+
+        productContainer.appendChild(productCard);
+      });
+    } catch (error) {
+      console.error("Error fetching products:", error);
+
+      // Hide the spinner even if there is an error
+      spinner.style.display = "none";
+    }
+  }
+
+  function setupTabs() {
+    const tabs = document.querySelectorAll(".tab");
+    tabs.forEach((tab) => {
+      tab.addEventListener("click", function () {
+        document.querySelector(".tab.active").classList.remove("active");
+        this.classList.add("active");
+        const category = this.getAttribute("data-category");
+        fetchProducts(category);
+      });
+    });
+  }
+
+  // Initial fetch to load all products
+  fetchProducts();
+  setupTabs();
+});

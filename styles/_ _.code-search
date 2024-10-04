@@ -1,0 +1,25 @@
+# Query: * {
+# ContextLines: 1
+
+5 results - 4 files
+
+search.html:
+  8      <style>
+  9:       * {
+  10          box-sizing: border-box;
+
+images\RedStore_Website Design_files\style.css:
+  1: * {
+  2    margin: 0;
+
+images\RedStore_Website Design_files\RedStore _ Website Design_files\style.css:
+  1: * {
+  2    margin: 0;
+
+styles\style.css:
+    1: * {
+    2    margin: 10;
+
+  372  
+  373: * {
+  374    box-sizing: border-box;

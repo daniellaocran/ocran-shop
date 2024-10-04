@@ -1,0 +1,89 @@
+document.addEventListener("DOMContentLoaded", (e) => {
+  //   async function fetchProducts() {
+  //     try {
+  //       const response = await fetch(
+  //         "https://shopfront-tagname.onrender.com/api/v1/products"
+  //       );
+  //       const data = await response.json();
+  //       const productContainer = document.getElementById("product-container");
+
+  //       data.forEach((product) => {
+  //         const productCard = document.createElement("div");
+  //         productCard.className = "card";
+
+  //         const productImage = document.createElement("img");
+  //         productImage.src = product.imageUrl;
+  //         productImage.alt = product.name;
+
+  //         const productName = document.createElement("h4");
+  //         productName.textContent = product.name;
+
+  //         const productPrice = document.createElement("p");
+  //         productPrice.className = "price";
+  //         productPrice.textContent = `GHS ${product.price}`;
+
+  //         productCard.appendChild(productImage);
+  //         productCard.appendChild(productName);
+  //         productCard.appendChild(productPrice);
+
+  //         productContainer.appendChild(productCard);
+  //       });
+  //     } catch (error) {
+  //       console.error("Error fetching products:", error);
+  //     }
+  //   }
+
+  async function fetchProducts(category = "") {
+    try {
+      const url = category
+        ? `https://shopfront-tagname.onrender.com/api/v1/products?category=${category}`
+        : "https://shopfront-tagname.onrender.com/api/v1/products";
+      const response = await fetch(url);
+      const data = await response.json();
+      const productContainer = document.getElementById("product-container");
+      productContainer.innerHTML = ""; // Clear existing products
+
+      data.forEach((product) => {
+        const productCard = document.createElement("div");
+        productCard.className = "card";
+
+        const productImage = document.createElement("img");
+        productImage.src = product.imageUrl;
+        productImage.alt = product.name;
+
+        const productName = document.createElement("h4");
+        productName.textContent = product.name;
+
+        const productPrice = document.createElement("p");
+        productPrice.className = "price";
+        productPrice.textContent = `GHS ${product.price}`;
+
+        productCard.appendChild(productImage);
+        productCard.appendChild(productName);
+        productCard.appendChild(productPrice);
+
+        productContainer.appendChild(productCard);
+      });
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  }
+
+  function setupTabs() {
+    const tabs = document.querySelectorAll(".tab");
+    tabs.forEach((tab) => {
+      tab.addEventListener("click", function () {
+        document.querySelector(".tab.active").classList.remove("active");
+        this.classList.add("active");
+        const category = this.getAttribute("data-category");
+        fetchProducts(category);
+      });
+    });
+  }
+
+  // Initial fetch to load all products
+  fetchProducts();
+  setupTabs();
+
+  fetchProducts();
+});
